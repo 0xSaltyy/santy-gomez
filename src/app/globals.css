@@ -149,4 +149,143 @@ select {
     position: relative;
     z-index: 1;
   }
+
+  .article-markdown {
+    @apply text-lg leading-9 text-ink/80;
+  }
+
+  .article-markdown > * + * {
+    margin-top: 1.25rem;
+  }
+
+  .article-markdown h1,
+  .article-markdown h2,
+  .article-markdown h3 {
+    @apply font-display font-bold leading-tight text-ink;
+  }
+
+  .article-markdown h1 {
+    @apply mt-10 text-4xl sm:text-5xl;
+  }
+
+  .article-markdown h2 {
+    @apply mt-10 border-t border-line pt-8 text-3xl sm:text-4xl;
+  }
+
+  .article-markdown h3 {
+    @apply mt-8 text-2xl text-forest;
+  }
+
+  .article-markdown p {
+    @apply leading-9;
+  }
+
+  .article-markdown strong {
+    @apply font-bold text-ink;
+  }
+
+  .article-markdown em {
+    @apply text-ink/75;
+  }
+
+  .article-markdown a {
+    @apply break-words font-display font-bold text-forest underline decoration-cyan/60 decoration-2 underline-offset-4 transition hover:text-ink;
+  }
+
+  .article-markdown ul,
+  .article-markdown ol {
+    @apply space-y-2 pl-6;
+  }
+
+  .article-markdown ul {
+    @apply list-disc;
+  }
+
+  .article-markdown ol {
+    @apply list-decimal;
+  }
+
+  .article-markdown li {
+    @apply pl-2 leading-8;
+  }
+
+  .article-markdown blockquote {
+    @apply rounded-lg border-l-4 border-cyan bg-gradient-to-br from-white/80 to-cyan/10 px-5 py-4 font-accent text-xl italic leading-9 text-ink/75 shadow-sm;
+  }
+
+  .article-markdown hr {
+    @apply my-10 border-line;
+  }
+
+  .article-markdown code {
+    @apply rounded-md bg-paper px-1.5 py-0.5 font-mono text-sm text-forest;
+  }
+}
+
+@media print {
+  @page {
+    margin: 0.75in;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
+
+  body::before,
+  header,
+  footer,
+  nav,
+  .print\:hidden,
+  .soft-band::before {
+    display: none !important;
+  }
+
+  .article-print-root {
+    background: #ffffff !important;
+    padding: 0 !important;
+  }
+
+  .container-shell {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  .glass-panel,
+  .editorial-card,
+  .references-section,
+  .article-print-root img,
+  .article-print-root section,
+  .article-print-root div {
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .article-print-root h1 {
+    font-size: 32pt !important;
+    line-height: 1.08 !important;
+  }
+
+  .article-markdown {
+    font-size: 11.5pt !important;
+    line-height: 1.65 !important;
+  }
+
+  .article-markdown h1 {
+    font-size: 22pt !important;
+  }
+
+  .article-markdown h2 {
+    font-size: 18pt !important;
+  }
+
+  .article-markdown h3 {
+    font-size: 14pt !important;
+  }
+
+  .article-markdown a {
+    color: #111111 !important;
+    text-decoration: underline !important;
+  }
 }

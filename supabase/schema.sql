@@ -17,6 +17,9 @@ create table if not exists public.articles (
   category text not null,
   date date not null default current_date,
   preview text not null,
+  abstract text,
+  keywords text,
+  author_note text,
   content text not null,
   sources text,
   image_url text,
@@ -27,6 +30,15 @@ create table if not exists public.articles (
 
 alter table public.articles
 add column if not exists sources text;
+
+alter table public.articles
+add column if not exists abstract text;
+
+alter table public.articles
+add column if not exists keywords text;
+
+alter table public.articles
+add column if not exists author_note text;
 
 create table if not exists public.updates (
   id uuid primary key default gen_random_uuid(),

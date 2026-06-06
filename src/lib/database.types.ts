@@ -35,6 +35,9 @@ export type Database = {
           category: string;
           date: string;
           preview: string;
+          abstract: string | null;
+          keywords: string | null;
+          author_note: string | null;
           content: string;
           sources: string | null;
           image_url: string | null;
@@ -49,6 +52,9 @@ export type Database = {
           category: string;
           date?: string;
           preview: string;
+          abstract?: string | null;
+          keywords?: string | null;
+          author_note?: string | null;
           content: string;
           sources?: string | null;
           image_url?: string | null;
@@ -63,6 +69,9 @@ export type Database = {
           category?: string;
           date?: string;
           preview?: string;
+          abstract?: string | null;
+          keywords?: string | null;
+          author_note?: string | null;
           content?: string;
           sources?: string | null;
           image_url?: string | null;

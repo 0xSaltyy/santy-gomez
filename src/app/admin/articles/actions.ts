@@ -45,6 +45,9 @@ export async function saveArticleAction(formData: FormData) {
   const category = requiredText(formData, "category");
   const date = requiredText(formData, "date");
   const preview = requiredText(formData, "preview");
+  const abstract = optionalText(formData, "abstract");
+  const keywords = optionalText(formData, "keywords");
+  const authorNote = optionalText(formData, "author_note");
   const content = requiredText(formData, "content");
   const sources = optionalText(formData, "sources");
   const status = resolveStatus(formData);
@@ -83,6 +86,9 @@ export async function saveArticleAction(formData: FormData) {
     category,
     date,
     preview,
+    abstract,
+    keywords,
+    author_note: authorNote,
     content,
     sources,
     image_url: imageUrl,

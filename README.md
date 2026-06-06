@@ -8,6 +8,7 @@ A formal personal website for Santy Gomez, formally Nicolas Santiago Gomez Zambr
 - React
 - Tailwind CSS
 - Framer Motion
+- React Markdown with GitHub-flavored Markdown
 - Supabase Auth
 - Supabase Database
 - Supabase Storage
@@ -47,6 +48,8 @@ The included SQL creates:
 - storage policies that allow only admins to upload, update, or delete images
 
 The `articles` table includes an optional `sources` field for references, citations, source notes, and links that appear at the bottom of each public article.
+
+Article bodies support Markdown for academic-style formatting, including headings, bold and italic text, quotes, lists, numbered lists, and links. Articles also include optional `abstract`, `keywords`, and `author_note` fields for polished public article pages and print/PDF output.
 
 ## Environment Variables
 
@@ -97,6 +100,8 @@ http://localhost:3000/login
 - Log in with the Supabase Auth user created for Santy Gomez.
 - Go to `/admin`.
 - Create a new article at `/admin/articles/new`.
+- Use Markdown in article bodies for headings, lists, quotes, emphasis, and links.
+- Add optional Abstract, Keywords, Author Note, Sources, and article image fields.
 - Manage updates at `/admin/updates`.
 - Manage projects at `/admin/projects`.
 - Edit About, Academic Interests intro, and Future Goals text at `/admin/content`.
