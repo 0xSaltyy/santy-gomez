@@ -4,10 +4,12 @@ import { ArticleAudioPlayer } from "@/components/article-audio-player";
 import { ArticleComments } from "@/components/article-comments";
 import { ArticleLikeButton } from "@/components/article-like-button";
 import { ArticleReveal, ArticleTools, KeywordPills, ReadingProgressBar } from "@/components/article-motion";
+import { ArticleTableOfContents } from "@/components/article-toc";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { getArticleBySlug, getArticleLikeCount, getVisibleArticleComments } from "@/lib/articles";
 import type { Article } from "@/lib/database.types";
 import { formatDate } from "@/lib/format";
+import { calculateReadingTime, extractMarkdownHeadings } from "@/lib/markdown";
 import { absoluteUrl, createPageMetadata, formalName, siteName } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -72,6 +74,8 @@ export default async function ArticlePage({ params }: PageProps) {
   const articleBody = article.content?.trim() || articleWithFallback.body?.trim() || "";
   const [likeCount, comments] = await Promise.all([getArticleLikeCount(article.id), getVisibleArticleComments(article.id)]);
   const keywords = parseKeywords(article.keywords);
+  const headings = extractMarkdownHeadings(articleBody);
+  const readingTime = calculateReadingTime(articleBody);
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -108,12 +112,16 @@ export default async function ArticlePage({ params }: PageProps) {
             <ArticleReveal>
               <p className="eyebrow">{article.category}</p>
               <h1 className="mt-4 font-display text-5xl font-bold leading-tight text-ink sm:text-6xl">{article.title}</h1>
-              <p className="mt-5 font-display text-sm font-bold uppercase tracking-[0.16em] text-ink/50">{formatDate(article.date)} · Santy Gomez</p>
+              <p className="mt-5 font-display text-sm font-bold uppercase tracking-[0.16em] text-ink/50">{formatDate(article.date)} · {readingTime} min read · Santy Gomez</p>
               <p className="mt-2 text-sm font-semibold uppercase tracking-[0.14em] text-ink/40">Nicolas Santiago Gomez Zambrano</p>
               {article.author_note ? <p className="mt-4 max-w-2xl border-l-2 border-cyan/60 pl-4 text-sm italic leading-7 text-ink/65">{article.author_note}</p> : null}
             </ArticleReveal>
 
             {keywords.length ? <KeywordPills keywords={keywords} /> : null}
+
+            <div className="mt-8 lg:hidden">
+              <ArticleTableOfContents headings={headings} />
+            </div>
 
             <ArticleAudioPlayer title={article.title} abstract={article.abstract} content={articleBody} />
 
@@ -169,7 +177,10 @@ export default async function ArticlePage({ params }: PageProps) {
             </ArticleReveal>
           </div>
 
-          <ArticleTools />
+          <aside className="space-y-4 print:hidden lg:sticky lg:top-24">
+            <ArticleTableOfContents headings={headings} />
+            <ArticleTools />
+          </aside>
         </div>
       </div>
     </article>

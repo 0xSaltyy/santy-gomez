@@ -72,7 +72,7 @@ export function ArticleTools() {
   }
 
   return (
-    <aside className="print:hidden lg:sticky lg:top-24">
+    <div className="print:hidden">
       <div className="flex flex-wrap gap-2 rounded-lg border border-white/70 bg-white/70 p-3 shadow-soft backdrop-blur-2xl lg:w-52 lg:flex-col">
         <motion.button
           type="button"
@@ -95,6 +95,6 @@ export function ArticleTools() {
           </Link>
         </motion.div>
       </div>
-    </aside>
+    </div>
   );
 }
