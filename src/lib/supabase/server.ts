@@ -3,6 +3,7 @@ import { createServerClient } from "@supabase/ssr";
 import type { CookieMethodsServer } from "@supabase/ssr";
 import type { Database } from "@/lib/database.types";
 import { getSupabaseConfig } from "@/lib/supabase/config";
+import { supabaseCookieOptions } from "@/lib/supabase/cookies";
 
 export async function createSupabaseServerClient() {
   const { supabaseUrl, supabaseAnonKey } = getSupabaseConfig();
@@ -23,6 +24,7 @@ export async function createSupabaseServerClient() {
   };
 
   return createServerClient<Database>(supabaseUrl, supabaseAnonKey, {
+    cookieOptions: supabaseCookieOptions,
     cookies: cookieMethods
   });
 }

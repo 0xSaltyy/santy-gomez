@@ -2,6 +2,9 @@
 
 import { createBrowserClient } from "@supabase/ssr";
 import type { Database } from "@/lib/database.types";
+import { supabaseCookieOptions } from "@/lib/supabase/cookies";
+
+let browserClient: ReturnType<typeof createBrowserClient<Database>> | undefined;
 
 export function hasBrowserSupabaseConfig() {
   return Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
@@ -15,5 +18,15 @@ export function createSupabaseBrowserClient() {
     throw new Error("Missing Supabase environment variables.");
   }
 
-  return createBrowserClient<Database>(supabaseUrl, supabaseAnonKey);
+  if (!browserClient) {
+    browserClient = createBrowserClient<Database>(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true
+      },
+      cookieOptions: supabaseCookieOptions
+    });
+  }
+
+  return browserClient;
 }

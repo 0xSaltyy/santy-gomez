@@ -38,7 +38,9 @@ export function LoginForm() {
       return;
     }
 
-    router.push(searchParams.get("next") || "/admin");
+    await supabase.auth.getSession();
+
+    router.replace(searchParams.get("next") || "/admin");
     router.refresh();
   }
 

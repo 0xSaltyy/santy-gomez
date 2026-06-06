@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { LoginForm } from "@/components/login-form";
+import { hasSupabaseConfig } from "@/lib/supabase/config";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
@@ -8,7 +11,22 @@ export const metadata: Metadata = {
   title: "Login"
 };
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  if (hasSupabaseConfig()) {
+    const supabase = await createSupabaseServerClient();
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      const { data: adminUser } = await supabase.from("admin_users").select("user_id").eq("user_id", user.id).maybeSingle();
+
+      if (adminUser) {
+        redirect("/admin");
+      }
+    }
+  }
+
   return (
     <section className="soft-band bg-paper/70 py-20">
       <div className="container-shell grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">

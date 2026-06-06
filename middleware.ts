@@ -2,6 +2,20 @@ import { createServerClient } from "@supabase/ssr";
 import type { CookieMethodsServer } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import type { Database } from "@/lib/database.types";
+import { supabaseCookieOptions } from "@/lib/supabase/cookies";
+
+function redirectWithSupabaseCookies(request: NextRequest, response: NextResponse, pathname: string, search = "") {
+  const redirectUrl = request.nextUrl.clone();
+  redirectUrl.pathname = pathname;
+  redirectUrl.search = search;
+
+  const redirectResponse = NextResponse.redirect(redirectUrl);
+  response.cookies.getAll().forEach((cookie) => {
+    redirectResponse.cookies.set(cookie.name, cookie.value, cookie);
+  });
+
+  return redirectResponse;
+}
 
 export async function middleware(request: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -30,6 +44,7 @@ export async function middleware(request: NextRequest) {
   };
 
   const supabase = createServerClient<Database>(supabaseUrl, supabaseAnonKey, {
+    cookieOptions: supabaseCookieOptions,
     cookies: cookieMethods
   });
 
@@ -43,19 +58,13 @@ export async function middleware(request: NextRequest) {
 
   if (isAdminRoute) {
     if (!user) {
-      const redirectUrl = request.nextUrl.clone();
-      redirectUrl.pathname = "/login";
-      redirectUrl.searchParams.set("next", pathname);
-      return NextResponse.redirect(redirectUrl);
+      return redirectWithSupabaseCookies(request, response, "/login", `?next=${encodeURIComponent(pathname)}`);
     }
 
     const { data: adminUser } = await supabase.from("admin_users").select("user_id").eq("user_id", user.id).maybeSingle();
 
     if (!adminUser) {
-      const redirectUrl = request.nextUrl.clone();
-      redirectUrl.pathname = "/";
-      redirectUrl.search = "";
-      return NextResponse.redirect(redirectUrl);
+      return redirectWithSupabaseCookies(request, response, "/");
     }
   }
 
@@ -63,10 +72,7 @@ export async function middleware(request: NextRequest) {
     const { data: adminUser } = await supabase.from("admin_users").select("user_id").eq("user_id", user.id).maybeSingle();
 
     if (adminUser) {
-      const redirectUrl = request.nextUrl.clone();
-      redirectUrl.pathname = "/admin";
-      redirectUrl.search = "";
-      return NextResponse.redirect(redirectUrl);
+      return redirectWithSupabaseCookies(request, response, "/admin");
     }
   }
 
