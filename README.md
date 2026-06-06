@@ -61,7 +61,6 @@ Fill in:
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-NEXT_PUBLIC_ADMIN_EMAIL=nicolas@example.com
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
@@ -76,7 +75,6 @@ The website does not include a hard-coded email or password. The login uses the 
 3. Enter the admin email you want Santy Gomez to use.
 4. Enter a secure password and save it somewhere private.
 5. Copy that user's UUID into the `admin_users` SQL insert shown above.
-6. Put the same admin email in `.env.local` as `NEXT_PUBLIC_ADMIN_EMAIL`.
 
 After that, log in at `/login` with the exact email and password you created in Supabase.
 
