@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  background: #faf6ef;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(115deg, rgba(201, 184, 255, 0.12), transparent 30%),
+    linear-gradient(245deg, rgba(157, 223, 236, 0.16), transparent 34%),
+    linear-gradient(180deg, #fbf8f2 0%, #f7efe6 48%, #faf6ef 100%);
+  color: #171819;
+  font-family: var(--font-body), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body::before {
+  pointer-events: none;
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.44;
+  background:
+    linear-gradient(90deg, rgba(23, 24, 25, 0.04) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(23, 24, 25, 0.04) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: linear-gradient(180deg, black, transparent 72%);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(201, 184, 255, 0.42);
+}
+
+@layer components {
+  .container-shell {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-6 lg:px-8;
+  }
+
+  .eyebrow {
+    @apply font-display text-xs font-bold uppercase tracking-[0.18em] text-forest;
+  }
+
+  .section-title {
+    @apply font-display text-4xl font-bold leading-tight text-ink sm:text-5xl;
+  }
+
+  .body-copy {
+    @apply text-base leading-8 text-ink/70 sm:text-lg;
+  }
+
+  .button-primary {
+    @apply relative inline-flex min-h-11 items-center justify-center gap-2 overflow-hidden rounded-lg bg-ink px-5 py-3 font-display text-sm font-bold text-white shadow-soft transition duration-300 hover:-translate-y-0.5 hover:shadow-glow focus:outline-none focus:ring-2 focus:ring-cyan/40;
+  }
+
+  .button-secondary {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-ink/10 bg-white/70 px-5 py-3 font-display text-sm font-bold text-ink shadow-sm backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:border-cyan/60 hover:bg-white hover:text-forest hover:shadow-glow focus:outline-none focus:ring-2 focus:ring-cyan/30;
+  }
+
+  .input-label {
+    @apply font-display text-sm font-bold text-ink;
+  }
+
+  .input-field {
+    @apply mt-2 w-full rounded-lg border border-line bg-white/80 px-4 py-3 text-base text-ink outline-none shadow-sm backdrop-blur-xl transition placeholder:text-ink/35 focus:border-cyan focus:ring-4 focus:ring-cyan/20;
+  }
+
+  .textarea-field {
+    @apply mt-2 w-full rounded-lg border border-line bg-white/80 px-4 py-3 text-base leading-7 text-ink outline-none shadow-sm backdrop-blur-xl transition placeholder:text-ink/35 focus:border-cyan focus:ring-4 focus:ring-cyan/20;
+  }
+
+  .status-pill {
+    @apply inline-flex items-center rounded-full border border-line bg-white/75 px-3 py-1 font-display text-xs font-bold uppercase tracking-[0.16em] text-ink/65 shadow-sm backdrop-blur-xl;
+  }
+
+  .glass-panel {
+    @apply rounded-lg border border-white/60 bg-white/60 shadow-glow backdrop-blur-2xl;
+  }
+
+  .editorial-card {
+    @apply rounded-lg border border-white/70 bg-white/75 shadow-soft backdrop-blur-xl transition duration-300;
+  }
+
+  .animated-link {
+    @apply relative inline-flex items-center gap-2 font-display font-bold text-forest;
+  }
+
+  .animated-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.2rem;
+    height: 2px;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: right;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #17624f, #9ddfec, #c9b8ff);
+    transition: transform 260ms ease;
+  }
+
+  .animated-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .accent-word {
+    font-family: var(--font-accent), var(--font-display), sans-serif;
+    font-variation-settings: "SOFT" 90, "WONK" 1;
+  }
+
+  .soft-band {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .soft-band::before {
+    content: "";
+    position: absolute;
+    inset: 1rem;
+    z-index: 0;
+    border-radius: 8px;
+    background:
+      linear-gradient(135deg, rgba(201, 184, 255, 0.18), transparent 34%),
+      linear-gradient(315deg, rgba(157, 223, 236, 0.16), transparent 38%);
+    filter: blur(18px);
+    opacity: 0.7;
+  }
+
+  .soft-band > * {
+    position: relative;
+    z-index: 1;
+  }
+}
