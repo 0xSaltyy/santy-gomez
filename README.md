@@ -41,7 +41,11 @@ The included SQL creates:
 - `projects`
 - `academic_interests`
 - `site_profile`
+- `article_likes`
+- `article_comments`
 - article row level security policies
+- public read/insert policies for article likes and visible comments
+- admin-only policies for hiding, unhiding, viewing hidden, and deleting comments
 - public read/admin write policies for updates, projects, interests, and profile content
 - an `article-images` public storage bucket
 - a `content-images` public storage bucket for project images
@@ -50,6 +54,8 @@ The included SQL creates:
 The `articles` table includes an optional `sources` field for references, citations, source notes, and links that appear at the bottom of each public article.
 
 Article bodies support Markdown for academic-style formatting, including headings, bold and italic text, quotes, lists, numbered lists, and links. Articles also include optional `abstract`, `keywords`, and `author_note` fields for polished public article pages and print/PDF output.
+
+Public article pages include browser-based text-to-speech, a lightweight likes system, and public comments. Comments publish immediately as `visible`, use plain text only, include a honeypot and browser cooldown, and can be hidden/unhidden or deleted from the admin dashboard.
 
 ## Environment Variables
 
@@ -104,6 +110,7 @@ http://localhost:3000/login
 - Add optional Abstract, Keywords, Author Note, Sources, and article image fields.
 - Manage updates at `/admin/updates`.
 - Manage projects at `/admin/projects`.
+- Manage comments at `/admin/comments`.
 - Edit About, Academic Interests intro, and Future Goals text at `/admin/content`.
 - Manage individual academic interests at `/admin/interests`.
 - Save as draft or publish.

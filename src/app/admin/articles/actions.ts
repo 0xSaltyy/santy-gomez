@@ -48,7 +48,11 @@ export async function saveArticleAction(formData: FormData) {
   const abstract = optionalText(formData, "abstract");
   const keywords = optionalText(formData, "keywords");
   const authorNote = optionalText(formData, "author_note");
-  const content = requiredText(formData, "content");
+  const content = optionalText(formData, "content") ?? optionalText(formData, "body");
+
+  if (!content) {
+    throw new Error("Article body is required.");
+  }
   const sources = optionalText(formData, "sources");
   const status = resolveStatus(formData);
   const slug = await createUniqueSlug(supabase, title, id ?? undefined);

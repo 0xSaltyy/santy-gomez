@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BriefcaseBusiness, CalendarDays, FilePlus2, Gauge, GraduationCap, ListChecks, Newspaper } from "lucide-react";
+import { BriefcaseBusiness, CalendarDays, FilePlus2, Gauge, GraduationCap, ListChecks, MessageSquare, Newspaper } from "lucide-react";
 import { LogoutButton } from "@/components/logout-button";
 
 const adminLinks = [
@@ -7,6 +7,7 @@ const adminLinks = [
   { href: "/admin/articles/new", label: "New Article", icon: FilePlus2 },
   { href: "/admin/updates", label: "Updates", icon: CalendarDays },
   { href: "/admin/projects", label: "Projects", icon: BriefcaseBusiness },
+  { href: "/admin/comments", label: "Comments", icon: MessageSquare },
   { href: "/admin/content", label: "About & Goals", icon: GraduationCap },
   { href: "/admin/interests", label: "Interests", icon: ListChecks },
   { href: "/articles", label: "Public Articles", icon: Newspaper }

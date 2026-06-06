@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { BookOpen, BriefcaseBusiness, CalendarDays, Edit3, FilePlus2, GraduationCap, ListChecks, Trash2 } from "lucide-react";
+import { BookOpen, BriefcaseBusiness, CalendarDays, Edit3, FilePlus2, GraduationCap, ListChecks, MessageSquare, Trash2 } from "lucide-react";
 import { deleteArticleAction } from "@/app/admin/articles/actions";
 import { requireAdmin } from "@/lib/auth";
-import { getAdminArticles } from "@/lib/articles";
+import { getAdminArticleComments, getAdminArticles } from "@/lib/articles";
 import { getAdminInterests } from "@/lib/content";
 import { formatDate } from "@/lib/format";
 import { getAdminProjects } from "@/lib/projects";
@@ -12,12 +12,19 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
   const { supabase } = await requireAdmin("/admin");
-  const [articles, updates, projects, interests] = await Promise.all([getAdminArticles(supabase), getAdminUpdates(supabase), getAdminProjects(supabase), getAdminInterests(supabase)]);
+  const [articles, updates, projects, interests, comments] = await Promise.all([
+    getAdminArticles(supabase),
+    getAdminUpdates(supabase),
+    getAdminProjects(supabase),
+    getAdminInterests(supabase),
+    getAdminArticleComments(supabase)
+  ]);
 
   const dashboardCards = [
     { label: "Articles", count: articles.length, href: "/admin/articles/new", icon: BookOpen },
     { label: "Updates", count: updates.length, href: "/admin/updates", icon: CalendarDays },
     { label: "Projects", count: projects.length, href: "/admin/projects", icon: BriefcaseBusiness },
+    { label: "Comments", count: comments.length, href: "/admin/comments", icon: MessageSquare },
     { label: "Interests", count: interests.length, href: "/admin/interests", icon: ListChecks },
     { label: "About & Goals", count: 1, href: "/admin/content", icon: GraduationCap }
   ];
@@ -35,7 +42,7 @@ export default async function AdminDashboardPage() {
         </Link>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
         {dashboardCards.map((card) => {
           const Icon = card.icon;
           return (

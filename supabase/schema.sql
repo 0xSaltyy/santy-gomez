@@ -88,6 +88,25 @@ create table if not exists public.site_profile (
   updated_at timestamptz not null default now()
 );
 
+create table if not exists public.article_likes (
+  id uuid primary key default gen_random_uuid(),
+  article_id uuid not null references public.articles(id) on delete cascade,
+  visitor_id text not null,
+  created_at timestamptz not null default now(),
+  unique (article_id, visitor_id)
+);
+
+create table if not exists public.article_comments (
+  id uuid primary key default gen_random_uuid(),
+  article_id uuid not null references public.articles(id) on delete cascade,
+  display_name text not null,
+  content text not null,
+  status text not null default 'visible' check (status in ('visible', 'hidden')),
+  visitor_id text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
 create or replace function public.set_updated_at()
 returns trigger
 language plpgsql
@@ -128,6 +147,12 @@ before update on public.site_profile
 for each row
 execute function public.set_updated_at();
 
+drop trigger if exists set_article_comments_updated_at on public.article_comments;
+create trigger set_article_comments_updated_at
+before update on public.article_comments
+for each row
+execute function public.set_updated_at();
+
 create or replace function public.is_admin(check_user_id uuid)
 returns boolean
 language sql
@@ -147,6 +172,8 @@ alter table public.updates enable row level security;
 alter table public.projects enable row level security;
 alter table public.academic_interests enable row level security;
 alter table public.site_profile enable row level security;
+alter table public.article_likes enable row level security;
+alter table public.article_comments enable row level security;
 
 drop policy if exists "Admins can read own admin status" on public.admin_users;
 create policy "Admins can read own admin status"
@@ -188,6 +215,72 @@ with check (public.is_admin(auth.uid()));
 drop policy if exists "Admins can delete articles" on public.articles;
 create policy "Admins can delete articles"
 on public.articles
+for delete
+to authenticated
+using (public.is_admin(auth.uid()));
+
+drop policy if exists "Article likes are publicly readable" on public.article_likes;
+create policy "Article likes are publicly readable"
+on public.article_likes
+for select
+to anon, authenticated
+using (true);
+
+drop policy if exists "Visitors can like published articles" on public.article_likes;
+create policy "Visitors can like published articles"
+on public.article_likes
+for insert
+to anon, authenticated
+with check (
+  length(trim(visitor_id)) between 16 and 120
+  and exists (
+    select 1 from public.articles
+    where articles.id = article_likes.article_id
+      and articles.status = 'published'
+  )
+);
+
+drop policy if exists "Admins can delete article likes" on public.article_likes;
+create policy "Admins can delete article likes"
+on public.article_likes
+for delete
+to authenticated
+using (public.is_admin(auth.uid()));
+
+drop policy if exists "Visible comments are publicly readable" on public.article_comments;
+create policy "Visible comments are publicly readable"
+on public.article_comments
+for select
+to anon, authenticated
+using (status = 'visible' or public.is_admin(auth.uid()));
+
+drop policy if exists "Visitors can comment on published articles" on public.article_comments;
+create policy "Visitors can comment on published articles"
+on public.article_comments
+for insert
+to anon, authenticated
+with check (
+  status = 'visible'
+  and length(trim(display_name)) between 2 and 60
+  and length(trim(content)) between 12 and 1200
+  and exists (
+    select 1 from public.articles
+    where articles.id = article_comments.article_id
+      and articles.status = 'published'
+  )
+);
+
+drop policy if exists "Admins can update article comments" on public.article_comments;
+create policy "Admins can update article comments"
+on public.article_comments
+for update
+to authenticated
+using (public.is_admin(auth.uid()))
+with check (public.is_admin(auth.uid()));
+
+drop policy if exists "Admins can delete article comments" on public.article_comments;
+create policy "Admins can delete article comments"
+on public.article_comments
 for delete
 to authenticated
 using (public.is_admin(auth.uid()));

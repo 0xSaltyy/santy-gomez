@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { ArticleAudioPlayer } from "@/components/article-audio-player";
+import { ArticleComments } from "@/components/article-comments";
+import { ArticleLikeButton } from "@/components/article-like-button";
 import { ArticleReveal, ArticleTools, KeywordPills, ReadingProgressBar } from "@/components/article-motion";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
-import { getArticleBySlug } from "@/lib/articles";
+import { getArticleBySlug, getArticleLikeCount, getVisibleArticleComments } from "@/lib/articles";
+import type { Article } from "@/lib/database.types";
 import { formatDate } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -37,6 +41,9 @@ export default async function ArticlePage({ params }: PageProps) {
     notFound();
   }
 
+  const articleWithFallback = article as Article & { body?: string | null };
+  const articleBody = article.content?.trim() || articleWithFallback.body?.trim() || "";
+  const [likeCount, comments] = await Promise.all([getArticleLikeCount(article.id), getVisibleArticleComments(article.id)]);
   const keywords = article.keywords
     ? article.keywords
         .split(",")
@@ -60,6 +67,10 @@ export default async function ArticlePage({ params }: PageProps) {
 
             {keywords.length ? <KeywordPills keywords={keywords} /> : null}
 
+            <ArticleAudioPlayer title={article.title} abstract={article.abstract} content={articleBody} />
+
+            <ArticleLikeButton articleId={article.id} slug={article.slug} initialCount={likeCount} />
+
             {article.abstract ? (
               <ArticleReveal delay={0.08}>
                 <section className="mt-9 rounded-lg border border-white/75 bg-gradient-to-br from-white/90 via-cyan/10 to-lavender/20 p-6 shadow-glow backdrop-blur-xl">
@@ -77,7 +88,7 @@ export default async function ArticlePage({ params }: PageProps) {
 
             <ArticleReveal>
               <div className="mt-10 rounded-lg border border-white/70 bg-white/65 px-5 py-8 shadow-soft backdrop-blur-xl sm:px-8 lg:px-10">
-                <MarkdownRenderer content={article.content} />
+                {articleBody ? <MarkdownRenderer content={articleBody} /> : <p className="text-base leading-8 text-ink/60">This article body has not been published yet.</p>}
               </div>
             </ArticleReveal>
 
@@ -100,6 +111,10 @@ export default async function ArticlePage({ params }: PageProps) {
                 </section>
               </ArticleReveal>
             ) : null}
+
+            <ArticleReveal>
+              <ArticleComments articleId={article.id} slug={article.slug} comments={comments} />
+            </ArticleReveal>
           </div>
 
           <ArticleTools />
