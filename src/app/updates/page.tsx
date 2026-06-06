@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import { Reveal } from "@/components/reveal";
 import { UpdateTimeline } from "@/components/update-timeline";
 import { getPublishedUpdates } from "@/lib/updates";
+import { createPageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Updates"
-};
+export const metadata: Metadata = createPageMetadata({
+  title: "Updates",
+  description: "Formal updates from Santy Gomez about projects, academic progress, research interests, articles, music, school work, and personal milestones.",
+  path: "/updates"
+});
 
 export default async function UpdatesPage() {
   const updates = await getPublishedUpdates();

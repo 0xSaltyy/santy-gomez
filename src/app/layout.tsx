@@ -5,6 +5,7 @@ import { AmbientBackdrop } from "@/components/ambient-backdrop";
 import { BackToTopButton } from "@/components/back-to-top-button";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { defaultDescription, personJsonLd, siteName, siteUrl, websiteJsonLd } from "@/lib/seo";
 
 const bodyFont = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -25,11 +26,36 @@ const accentFont = Fraunces({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
-    default: "Santy Gomez",
-    template: "%s | Santy Gomez"
+    default: "Santy Gomez | Nicolas Santiago Gomez Zambrano",
+    template: `%s | ${siteName}`
   },
-  description: "A formal archive of articles, reflections, and projects by Santy Gomez."
+  description: defaultDescription,
+  alternates: {
+    canonical: siteUrl
+  },
+  openGraph: {
+    title: "Santy Gomez | Nicolas Santiago Gomez Zambrano",
+    description: defaultDescription,
+    url: siteUrl,
+    siteName,
+    type: "website",
+    locale: "en_US"
+  },
+  twitter: {
+    card: "summary",
+    title: "Santy Gomez | Nicolas Santiago Gomez Zambrano",
+    description: defaultDescription
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true
+    }
+  }
 };
 
 export default function RootLayout({
@@ -40,6 +66,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${bodyFont.variable} ${displayFont.variable} ${accentFont.variable}`}>
       <body className="min-h-screen antialiased">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd()) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd()) }} />
         <AmbientBackdrop />
         <SiteHeader />
         <main>{children}</main>

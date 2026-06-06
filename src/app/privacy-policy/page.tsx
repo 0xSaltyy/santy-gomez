@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/reveal";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy"
-};
+export const metadata: Metadata = createPageMetadata({
+  title: "Privacy Policy",
+  description: "Simple privacy policy for the Santy Gomez website, explaining that unnecessary personal information is not collected.",
+  path: "/privacy-policy"
+});
 
 export default function PrivacyPolicyPage() {
   return (

@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/reveal";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Editorial Policy"
-};
+export const metadata: Metadata = createPageMetadata({
+  title: "Editorial Policy",
+  description: "Editorial policy for Santy Gomez articles, including authorship, research notes, cited sources, analysis, and future updates.",
+  path: "/editorial-policy"
+});
 
 export default function EditorialPolicyPage() {
   return (

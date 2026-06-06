@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/reveal";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Disclaimer"
-};
+export const metadata: Metadata = createPageMetadata({
+  title: "Disclaimer",
+  description: "Educational and informational disclaimer for articles and research reflections published on the Santy Gomez website.",
+  path: "/disclaimer"
+});
 
 export default function DisclaimerPage() {
   return (

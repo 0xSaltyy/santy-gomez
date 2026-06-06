@@ -6,8 +6,15 @@ import { InterestGrid } from "@/components/interest-grid";
 import { Reveal } from "@/components/reveal";
 import { getPublishedArticles } from "@/lib/articles";
 import { getPublishedInterests, getSiteProfile } from "@/lib/content";
+import { createPageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+
+export const metadata = createPageMetadata({
+  title: "Santy Gomez | Nicolas Santiago Gomez Zambrano",
+  description: "The formal personal website of Santy Gomez, Nicolas Santiago Gomez Zambrano, featuring articles, academic interests, projects, and public reflections.",
+  path: "/"
+});
 
 export default async function HomePage() {
   const [articles, profile, interests] = await Promise.all([getPublishedArticles(), getSiteProfile(), getPublishedInterests()]);

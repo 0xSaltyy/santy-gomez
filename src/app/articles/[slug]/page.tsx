@@ -8,6 +8,7 @@ import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { getArticleBySlug, getArticleLikeCount, getVisibleArticleComments } from "@/lib/articles";
 import type { Article } from "@/lib/database.types";
 import { formatDate } from "@/lib/format";
+import { absoluteUrl, createPageMetadata, formalName, siteName } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -27,10 +28,36 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  return {
+  const keywords = parseKeywords(article.keywords);
+
+  return createPageMetadata({
     title: article.title,
-    description: article.preview
-  };
+    description: article.abstract || article.preview,
+    path: `/articles/${article.slug}`,
+    type: "article",
+    publishedTime: article.date,
+    authors: [siteName, formalName],
+    tags: [article.category, ...keywords]
+  });
+}
+
+function parseKeywords(keywords: string | null) {
+  return keywords
+    ? keywords
+        .split(",")
+        .map((keyword) => keyword.trim())
+        .filter(Boolean)
+    : [];
+}
+
+function plainText(value: string | null | undefined) {
+  return value
+    ? value
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+        .replace(/[#>*_`~-]/g, "")
+        .replace(/\s+/g, " ")
+        .trim()
+    : "";
 }
 
 export default async function ArticlePage({ params }: PageProps) {
@@ -44,15 +71,36 @@ export default async function ArticlePage({ params }: PageProps) {
   const articleWithFallback = article as Article & { body?: string | null };
   const articleBody = article.content?.trim() || articleWithFallback.body?.trim() || "";
   const [likeCount, comments] = await Promise.all([getArticleLikeCount(article.id), getVisibleArticleComments(article.id)]);
-  const keywords = article.keywords
-    ? article.keywords
-        .split(",")
-        .map((keyword) => keyword.trim())
-        .filter(Boolean)
-    : [];
+  const keywords = parseKeywords(article.keywords);
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.abstract || article.preview,
+    articleSection: article.category,
+    keywords,
+    datePublished: article.date,
+    dateModified: article.updated_at,
+    author: {
+      "@type": "Person",
+      name: siteName,
+      alternateName: formalName
+    },
+    publisher: {
+      "@type": "Person",
+      name: siteName,
+      alternateName: formalName
+    },
+    mainEntityOfPage: absoluteUrl(`/articles/${article.slug}`),
+    url: absoluteUrl(`/articles/${article.slug}`),
+    image: article.image_url || undefined,
+    articleBody: plainText(articleBody),
+    abstract: article.abstract || undefined
+  };
 
   return (
     <article className="article-print-root soft-band bg-paper/70 py-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       <ReadingProgressBar />
       <div className="container-shell max-w-6xl">
         <div className="grid gap-8 lg:grid-cols-[1fr_220px] lg:items-start">

@@ -3,10 +3,13 @@ import { GraduationCap } from "lucide-react";
 import { InterestGrid } from "@/components/interest-grid";
 import { Reveal } from "@/components/reveal";
 import { getPublishedInterests, getSiteProfile } from "@/lib/content";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "About"
-};
+export const metadata: Metadata = createPageMetadata({
+  title: "About Santy Gomez",
+  description: "Learn about Santy Gomez, formally Nicolas Santiago Gomez Zambrano, his academic interests, future goals, writing, and emerging scholarly direction.",
+  path: "/about"
+});
 
 export const dynamic = "force-dynamic";
 

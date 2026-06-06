@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, Mail } from "lucide-react";
 import { Reveal } from "@/components/reveal";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact"
-};
+export const metadata: Metadata = createPageMetadata({
+  title: "Contact",
+  description: "Contact and selected public links for Santy Gomez, the public-facing name of Nicolas Santiago Gomez Zambrano.",
+  path: "/contact"
+});
 
 const links = [
   { label: "Email", href: "mailto:nicolas.gomez@example.com" },

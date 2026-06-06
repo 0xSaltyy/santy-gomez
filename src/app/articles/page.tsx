@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import { ArticleCard } from "@/components/article-card";
 import { Reveal } from "@/components/reveal";
 import { getPublishedArticles } from "@/lib/articles";
+import { createPageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Articles"
-};
+export const metadata: Metadata = createPageMetadata({
+  title: "Articles",
+  description: "Published essays and academic-style reflections by Santy Gomez on science, law, politics, culture, music, and public life.",
+  path: "/articles"
+});
 
 export default async function ArticlesPage() {
   const articles = await getPublishedArticles();

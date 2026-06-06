@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import { ProjectCard } from "@/components/project-card";
 import { Reveal } from "@/components/reveal";
 import { getPublishedProjects } from "@/lib/projects";
+import { createPageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Projects"
-};
+export const metadata: Metadata = createPageMetadata({
+  title: "Projects",
+  description: "Academic and personal projects by Santy Gomez, including research exploration, writing projects, music, and selected formal initiatives.",
+  path: "/projects"
+});
 
 export default async function ProjectsPage() {
   const projects = await getPublishedProjects();
