@@ -86,11 +86,15 @@ export default async function ArticlePage({ params }: PageProps) {
               </ArticleReveal>
             ) : null}
 
-            <ArticleReveal>
-              <div className="mt-10 rounded-lg border border-white/70 bg-white/65 px-5 py-8 shadow-soft backdrop-blur-xl sm:px-8 lg:px-10">
-                {articleBody ? <MarkdownRenderer content={articleBody} /> : <p className="text-base leading-8 text-ink/60">This article body has not been published yet.</p>}
-              </div>
-            </ArticleReveal>
+            <div className="article-body mt-10 rounded-lg border border-white/70 bg-white/65 px-5 py-8 shadow-soft backdrop-blur-xl sm:px-8 lg:px-10" data-article-body="true">
+              {articleBody ? (
+                <MarkdownRenderer content={articleBody} />
+              ) : process.env.NODE_ENV === "development" ? (
+                <p className="rounded-lg border border-forest/20 bg-forest/5 p-4 text-sm leading-7 text-ink/65">Development note: no article body was found in the article content or body field.</p>
+              ) : (
+                <p className="text-base leading-8 text-ink/60">This article body has not been published yet.</p>
+              )}
+            </div>
 
             <ArticleReveal>
               <section className="glass-panel mt-12 p-6">

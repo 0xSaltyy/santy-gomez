@@ -7,7 +7,8 @@ import type { Article } from "@/lib/database.types";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 
 export function ArticleForm({ article }: { article?: Article | null }) {
-  const [content, setContent] = useState(article?.content ?? "");
+  const articleWithFallback = article as (Article & { body?: string | null }) | null | undefined;
+  const [content, setContent] = useState(article?.content ?? articleWithFallback?.body ?? "");
 
   return (
     <form action={saveArticleAction} className="space-y-7 rounded-lg border border-white/70 bg-white/80 p-6 shadow-glow backdrop-blur-xl">
