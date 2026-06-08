@@ -48,6 +48,14 @@ export const metadata: Metadata = {
     title: "Santy Gomez | Nicolas Santiago Gomez Zambrano",
     description: defaultDescription
   },
+  icons: {
+    icon: [
+      { url: "/sg-favicon.svg", type: "image/svg+xml" },
+      { url: "/sg-logo.svg", sizes: "512x512", type: "image/svg+xml" }
+    ],
+    shortcut: "/sg-favicon.svg",
+    apple: "/sg-logo.svg"
+  },
   robots: {
     index: true,
     follow: true,

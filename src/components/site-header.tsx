@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { BriefcaseBusiness, CalendarDays, LockKeyhole, Mail, Newspaper, UserRound } from "lucide-react";
@@ -28,11 +29,11 @@ export function SiteHeader() {
       <div className="container-shell flex min-h-16 items-center justify-between gap-4">
         <Link href="/" className="group flex items-center gap-3">
           <motion.span
-            className="flex h-10 w-10 items-center justify-center rounded-lg border border-ink/10 bg-white/80 font-display text-sm font-bold text-forest shadow-sm backdrop-blur-xl transition group-hover:border-cyan/70"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-ink/10 bg-white/80 shadow-sm backdrop-blur-xl transition group-hover:border-cyan/70"
             whileHover={{ rotate: -4, scale: 1.06 }}
             whileTap={{ scale: 0.96 }}
           >
-            SG
+            <Image src="/sg-favicon.svg" alt="Santy Gomez SG monogram" width={32} height={32} priority />
           </motion.span>
           <span className="hidden font-display text-sm font-bold uppercase tracking-[0.18em] text-ink sm:inline">Santy Gomez</span>
         </Link>

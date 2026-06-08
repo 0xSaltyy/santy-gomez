@@ -1,0 +1,9 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Santy Gomez monochrome SG monogram</title>
+  <desc id="desc">A monochrome SG monogram for one-color brand use.</desc>
+  <rect x="34" y="34" width="444" height="444" rx="116" fill="none"/>
+  <rect x="45" y="45" width="422" height="422" rx="105" stroke="#171819" stroke-opacity="0.16" stroke-width="22"/>
+  <path d="M143 363C173 383 214 390 249 375C281 361 299 333 296 304C292 267 260 252 224 240C194 230 172 220 170 197C168 174 187 158 215 155C240 152 264 159 286 175" stroke="#171819" stroke-width="30" stroke-linecap="round"/>
+  <path d="M369 176C344 154 311 142 276 143C215 145 169 185 167 242C164 304 213 349 279 349C326 349 360 326 374 293H292" stroke="#171819" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M356 286C361 267 360 246 352 227" stroke="#171819" stroke-width="30" stroke-linecap="round"/>
+</svg>
