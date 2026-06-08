@@ -3,5 +3,5 @@ Allow: /
 Disallow: /admin/
 Disallow: /login
 
-Sitemap: https://www.santygomez.xyz/sitemap.xml
 Sitemap: https://www.santygomez.xyz/sitemap-static.xml
+Sitemap: https://www.santygomez.xyz/sitemap.xml
