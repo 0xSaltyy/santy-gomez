@@ -30,6 +30,9 @@ export function SiteFooter() {
           <Link href="/privacy-policy" className="animated-link text-sm text-ink/60 hover:text-forest">
             Privacy Policy
           </Link>
+          <Link href="/site-map" className="animated-link text-sm text-ink/60 hover:text-forest">
+            Site Map
+          </Link>
           <Link href="/login" className="animated-link text-sm text-ink/60 hover:text-forest">
             Admin
           </Link>
